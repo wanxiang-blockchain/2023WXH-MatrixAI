@@ -1,0 +1,3 @@
+{"level":"info","ts":1692933325.5454834,"msg":"-------------------- start --------------------"}
+{"level":"error","ts":1692933325.6235147,"msg":"error getting hardware info: exec: \"wmic\": executable file not found in $PATH"}
+{"level":"error","ts":1692933325.623564,"msg":"error getting hardware info: exec: \"wmic\": executable file not found in $PATH"}
