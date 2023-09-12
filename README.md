@@ -109,6 +109,7 @@ The client can be divided into three modules: Device Share, Task Match, and Stat
   - After the user purchases computing power, the model and data are automatically downloaded to the local and the model is run
   - Start and stop computing tasks based on order data
   - Support running user-defined docker image tasks
+    
 The client is an application written in **go** and runs on the **linux** server. It needs to configure an account (including private key and address) for the first run, and the account needs to obtain a token in advance to pay the gas fee.
 
 - Device-Score
