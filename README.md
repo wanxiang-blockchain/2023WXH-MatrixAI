@@ -12,7 +12,7 @@
   - [Background](#Background)
   - [Motivation](#Motivation)
   - [MatrixAI's Solution](#MatrixAIs-Solution)
-- [What have we done?](#What-have-we-done)
+- [What have we done?](#What-have-we-done-?)
   - [Blockchain](#Blockchain)
   - [Client](#Client)
   - [Web](#Web)
