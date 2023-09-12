@@ -131,6 +131,7 @@ The client is an application written in **go** and runs on the **linux** server.
   - Model training result download
   - order record
   - Task running log
+  - More comprehensive device information
 
 - MatrixAI-market-backend
   - device level classification
