@@ -12,7 +12,7 @@
   - [Background](#Background)
   - [Motivation](#Motivation)
   - [MatrixAI's Solution](#MatrixAIs-Solution)
-- [What have we done?](#What-have-we-done-?)
+- [What have we done](#What-have-we-done)
   - [Blockchain](#Blockchain)
   - [Client](#Client)
   - [Web](#Web)
@@ -73,7 +73,7 @@ MatrixAI is committed to breaking the current centralized monopoly, bringing inn
     In a trustless computing power network, ensuring that computing power providers faithfully conduct model training is a crucial aspect. Through in-depth research, we have proposed Training Proof (PoT), which utilizes empirical comparisons to verify quantitative metrics such as accuracy and parameter distribution distances. It validates whether the intermediate checkpoints produced during the model training process match the output model. With the support of PoT, the training party generates a coherent proof package after training, and anyone who obtains the proof package can act as a verifier. Based on our proposed "all-pass rule," verifiers can assess whether the training party has faithfully completed the model training.
 
 
-## What have we done?
+## What have we done
 
 ### Blockchain
 
