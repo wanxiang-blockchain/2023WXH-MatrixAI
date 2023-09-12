@@ -94,6 +94,10 @@ MatrixAI is committed to breaking the current centralized monopoly, bringing inn
   - Hashrate Scoring Function
 
 ### Client
+
+The client is a crucial component for trainers. Trainers simply need to deploy this client on their own machines, and the rest requires minimal effort. For instance, it will automatically join the MatrixAI network and list orders on the computing power marketplace. When a user places an order, the client will promptly initiate the order's task. Additionally, upon task completion, it will submit the results back to the marketplace.
+
+The client can be divided into three modules: Device Share, Task Match, and Status Inquiry, as illustrated in the diagram below.
 <img src="./docs/figclient.png" />
 
 - MatrixAI-Client
@@ -113,9 +117,9 @@ The client is an application written in **go** and runs on the **linux** server.
   - Verify that the computing power provider trains as required and generates correct proofs
 
 ### Web 
+
+ Matrix-UI is a web frontend application designed for users to access and navigate the computing power marketplace, as well as place orders online. The UI design of Matrix-UI can be found in this section and includes features such as wallet login and light client capabilities. The diagram below illustrates the architectural design.
 <img src="./docs/figUI.svg" />
-
-
 - MatrixAI-UI
   - user server list
   - Server status query
@@ -124,6 +128,7 @@ The client is an application written in **go** and runs on the **linux** server.
   - Model data upload
   - Model training result download
   - order record
+    
 
 - MatrixAI-market-backend
   - device level classification
