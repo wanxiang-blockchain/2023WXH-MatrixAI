@@ -1,0 +1,47 @@
+订单数据结构：
+{
+    ID: 30294870,
+    TaskName: "fdasfdas",
+    BuyTime: "fdsafdsa",
+    RemainingTime: "fdsafdsa",
+    CompleteTime: "fdsafdsaf",
+    EstimateComputingtime: 321,
+    Seller: "fdsa",
+    Buyer: "",
+    Algorithm: "",
+    Libery: "",
+    dataUrl: "fdsaf",
+    DatasetSize: 3232323,
+    TFLOPS: 44.5,
+    Duration: 21,
+    Price: 12,
+    Total: 12,
+    Status: "pending",
+    Hash: "ox2e32112134fdfreqsafdsafdsa",
+    From: "ox2e32112134fdfreqsafdsafdsa",
+    To: "ox2e32112134fdfreqsafdsafdsa",
+}
+
+机器数据结构：
+{
+    ID: 30294870,
+    Addr:"0x982s02...gh9l220",      
+    Reliability: 98.54,
+    CPS: 92,
+    Score: 99,
+    Region:"Asia",
+    GPU:"RTX 4090",
+    GraphicsCoprocessor:"2x AMD Ryzen Threadripper PRO 5955WX 16-Core",
+    GPUCount: 2,
+    TFLOPS: 44.5,
+    Algorithm:"",
+    Libery:"",
+    Price: 12,
+    CPU:"AMD Ryzen Threadripper PRO 5955WX 16-Cores 2.3Ghz",
+    AvailHardDrive: "100GB",
+    RAM: "24GB",
+    MaxDuration: 12,
+    UploadSpeed:"200Mbps",
+    DownloadSpeed:"200Mbps",
+    Status: "Runing"
+}
