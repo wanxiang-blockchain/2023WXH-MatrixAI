@@ -92,12 +92,99 @@ func (m *MachineStatusEnum) Decode(decoder scale.Decoder) error {
 }
 
 type OrderPlacedMetadata struct {
+	MachineInfo MachineInfo `json:"machineInfo"`
+	FormData    FormData    `json:"formData"`
+}
+
+type MachineInfo struct {
+	Id             int      `json:"Id"`
+	Owner          string   `json:"Owner"`
+	Uuid           string   `json:"Uuid"`
+	Metadata       Metadata `json:"Metadata"`
+	Status         int      `json:"Status"`
+	Price          int      `json:"Price"`
+	MaxDuration    int      `json:"MaxDuration"`
+	Disk           int      `json:"Disk"`
+	CompletedCount int      `json:"CompletedCount"`
+	FailedCount    int      `json:"FailedCount"`
+	Score          float32  `json:"Score"`
+	Gpu            string   `json:"Gpu"`
+	GpuCount       int      `json:"GpuCount"`
+	Region         string   `json:"Region"`
+	Tflops         float32  `json:"Tflops"`
+	Addr           string   `json:"Addr"`
+	UuidShort      string   `json:"UuidShort"`
+	Cpu            string   `json:"Cpu"`
+	RAM            string   `json:"RAM"`
+	AvailHardDrive string   `json:"AvailHardDrive"`
+	UploadSpeed    string   `json:"UploadSpeed"`
+	DownloadSpeed  string   `json:"DownloadSpeed"`
+	Reliability    string   `json:"Reliability"`
+	TFLOPS         float32  `json:"TFLOPS"`
+}
+
+type Metadata struct {
+	MachineUUID  string       `json:"MachineUUID"`
+	Addr         string       `json:"Addr"`
+	CPUInfo      CPUInfo      `json:"CPUInfo"`
+	DiskInfo     DiskInfo     `json:"DiskInfo"`
+	Score        float32      `json:"Score"`
+	InfoMemory   InfoMemory   `json:"InfoMemory"`
+	GPUInfo      GPUInfo      `json:"GPUInfo"`
+	LocationInfo LocationInfo `json:"LocationInfo"`
+	SpeedInfo    SpeedInfo    `json:"SpeedInfo"`
+	InfoFlop     InfoFlop     `json:"InfoFlop"`
+}
+
+type CPUInfo struct {
+	ModelName string  `json:"ModelName"`
+	Cores     int     `json:"Cores"`
+	Mhz       float32 `json:"Mhz"`
+}
+
+type DiskInfo struct {
+	Path       string  `json:"Path"`
+	TotalSpace float32 `json:"TotalSpace"`
+}
+
+type InfoMemory struct {
+	RAM float32 `json:"RAM"`
+}
+
+type GPUInfo struct {
+	Model  string `json:"Model"`
+	Number int    `json:"Number"`
+}
+
+type LocationInfo struct {
+	Country string `json:"Country"`
+	Region  string `json:"Region"`
+	City    string `json:"City"`
+}
+
+type SpeedInfo struct {
+	Download string `json:"Download"`
+	Upload   string `json:"Upload"`
+}
+
+type InfoFlop struct {
+	Flops float32 `json:"Flops"`
+}
+
+type FormData struct {
 	TaskName     string `json:"taskName"`
-	Duration     int    `json:"duration"`
-	Algorithm    string `json:"algorithm"`
+	ImageName    string `json:"imageName"`
+	ImageTag     string `json:"imageTag"`
+	Libery       string `json:"libery"`
+	Model        string `json:"model"`
 	DataUrl      string `json:"dataUrl"`
+	Iters        string `json:"iters"`
+	Batchsize    string `json:"batchsize"`
+	Rate         string `json:"rate"`
+	Duration     int    `json:"duration"`
+	LibType      string `json:"libType"`
 	BuyTime      string `json:"buyTime"`
-	Price        int    `json:"price"`
+	OrderTime    string `json:"orderTime"`
 	ModelUrl     string `json:"modelUrl"`
 	CompleteTime string `json:"completeTime"`
 	Evaluate     string `json:"evaluate"`

@@ -10,8 +10,6 @@ require (
 	github.com/urfave/cli v1.22.13
 	go.uber.org/zap v1.24.0
 	golang.org/x/crypto v0.10.0
-	google.golang.org/grpc v1.55.0
-	google.golang.org/protobuf v1.30.0
 )
 
 require (

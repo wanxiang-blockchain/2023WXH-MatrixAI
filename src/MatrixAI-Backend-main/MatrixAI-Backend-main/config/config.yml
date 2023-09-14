@@ -1,0 +1,19 @@
+Server:
+  Mode: release
+  Port: 8888
+
+Database:
+  Host:
+  Port: 3306
+  UserName:
+  Password:
+  Database: matrix-ai
+
+Mailbox:
+  Host:
+  Port: 25
+  Username:
+  Password:
+
+Chain:
+  Rpc: wss://rpc.matrixai.cloud/ws/

@@ -20,7 +20,7 @@ func GetSpeedInfo() (InfoSpeed, error) {
 	out, err := exec.Command("speedtest-cli").Output()
 
 	if err != nil {
-		return InfoSpeed{}, fmt.Errorf("speedtest-cli not installed, Failed to execute command: %v", err)
+		return InfoSpeed{}, fmt.Errorf("speedtest-cli, Failed to execute command: %v\nout: %v", err, string(out))
 	}
 
 	output := string(out)

@@ -17,7 +17,7 @@ func GetInfoMachineUUID() (MachineUUID, error) {
 	}
 
 	return MachineUUID(strings.TrimSpace(string(mID))), nil
-	// return MachineUUID("0xb711ebf34e474f4db43198e23a59d430"), nil
+	// return MachineUUID("ec226411f4afcde6fa8764b242b51b02"), nil
 
 	// output, err := exec.Command("bash", "-c", "sudo dmidecode -s system-uuid").Output()
 	// if err != nil {

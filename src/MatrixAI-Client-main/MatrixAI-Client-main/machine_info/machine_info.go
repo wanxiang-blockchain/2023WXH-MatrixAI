@@ -46,9 +46,9 @@ func GetMachineInfo() (MachineInfo, error) {
 
 	// 获取 GPU 信息
 	gpuInfo, err := gpu.GetIntelGPUInfo()
-	// if err != nil {
-	// 	return hwInfo, err
-	// }
+	if err != nil {
+		return hwInfo, err
+	}
 	hwInfo.GPUInfo = gpuInfo
 
 	// 获取 IP 对应的地理位置信息

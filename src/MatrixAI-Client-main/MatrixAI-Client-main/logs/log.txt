@@ -1134,3 +1134,74 @@
 {"level":"info","ts":1694413354.2056656,"msg":"88888888888888"}
 {"level":"error","ts":1694413354.5893621,"msg":"Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'\nnvidia-container-cli: initialization error: WSL environment detected but no adapters were found: unknown"}
 {"level":"error","ts":1694413354.5894206,"msg":"Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'\nnvidia-container-cli: initialization error: WSL environment detected but no adapters were found: unknown"}
+{"level":"info","ts":1694481331.7064772,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694482038.0374303,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694482043.2638564,"msg":"------------------ Extrinsic completed ------------------ \n 0xa34b697ed9f7bc4b1980999dd824e4685f9aad3f9fc860d071e4ec3c9083f4bc"}
+{"level":"info","ts":1694482043.5993223,"msg":"Machine Removed bingo!!!"}
+{"level":"info","ts":1694482184.083707,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694482253.322767,"msg":"------------------ Extrinsic completed ------------------ \n 0x787cda9d6f7c6b714bb8d8cc9fbc3de27234c9900f192cbfb819272e3a6fbb81"}
+{"level":"info","ts":1694482253.723737,"msg":"add machine bingo!!!"}
+{"level":"info","ts":1694483731.370721,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694483741.297928,"msg":"------------------ Extrinsic completed ------------------ \n 0x4537da884e2952ea3671b4ce80e8517589da1efe36841577a4a89ec1ef2ffea8"}
+{"level":"info","ts":1694483741.6878488,"msg":"Machine Removed bingo!!!"}
+{"level":"info","ts":1694486384.9180064,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694486471.367136,"msg":"------------------ Extrinsic completed ------------------ \n 0x31fc6b0975a079e2ae145a4a87f9562c5acffcd4bd69aba5453a666a7e977e8b"}
+{"level":"info","ts":1694486471.7758605,"msg":"add machine bingo!!!"}
+{"level":"info","ts":1694486481.5037525,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694486489.3673308,"msg":"------------------ Extrinsic completed ------------------ \n 0xc612fb6f630da8e30e68ef6ab330a10c0110729d83f0a388c6b74fe2f7ea9bbf"}
+{"level":"info","ts":1694486489.7893286,"msg":"Machine Removed bingo!!!"}
+{"level":"info","ts":1694486512.5182495,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694486621.3271968,"msg":"------------------ Extrinsic completed ------------------ \n 0x50ab11390c403b2ac661cbed1fc360333a2451a86f35950a92c6deeeca8d8164"}
+{"level":"info","ts":1694486621.7939947,"msg":"add machine bingo!!!"}
+{"level":"info","ts":1694487090.1513236,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694487179.012992,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694487185.4138224,"msg":"------------------ Extrinsic completed ------------------ \n 0xe3f8fc123a022f1c321c2e588697c5759da834136f6fc64755f5772b458a83b3"}
+{"level":"info","ts":1694487185.8722656,"msg":"Machine Removed bingo!!!"}
+{"level":"info","ts":1694487192.9434752,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694487269.3677301,"msg":"------------------ Extrinsic completed ------------------ \n 0xbafa98e7ae9553264415b1f2f6d1638c51e8e6ca36fa9ac211a11820312a092e"}
+{"level":"info","ts":1694487269.7480755,"msg":"add machine bingo!!!"}
+{"level":"info","ts":1694488271.3677046,"msg":"Subscribe HashrateMarket_OrderPlaced : 0xa7ea90a93acfa76d6d7659d7589372e9f77b0f678e802c0b887761f79d888cbd"}
+{"level":"info","ts":1694488271.7452333,"msg":"Start training model, orderId: [57 57 57 49 54 57 52 52 56 56 50 54 54 57 57 53]"}
+{"level":"info","ts":1694488271.746279,"msg":"Start training model, orderPlacedMetadata: {         0      }"}
+{"level":"error","ts":1694488272.403486,"msg":"Container operation failed\nError response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'\nnvidia-container-cli: initialization error: WSL environment detected but no adapters were found: unknown"}
+{"level":"info","ts":1694488277.3799438,"msg":"------------------ Extrinsic completed ------------------ \n 0x70822cbaa43e5d4fb5cbb974669b081b6e8beba1dcc8bbb25e629977616d8508"}
+{"level":"info","ts":1694488277.7237844,"msg":"order failed bingo!!!"}
+{"level":"info","ts":1694488789.7669168,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694488800.20499,"msg":"------------------ Extrinsic completed ------------------ \n 0x24537929a661a838b152e1afcee03c70295fb8fbb8ac938c7dd83207404a96ee"}
+{"level":"info","ts":1694488800.5911262,"msg":"Machine Removed bingo!!!"}
+{"level":"info","ts":1694489884.6721659,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694489951.3774426,"msg":"------------------ Extrinsic completed ------------------ \n 0x29faa720d33bf45e07dea87c184e4263e934102475d1baa8c23f00f1939ad195"}
+{"level":"info","ts":1694489951.7326388,"msg":"add machine bingo!!!"}
+{"level":"info","ts":1694490035.398231,"msg":"Subscribe HashrateMarket_OrderPlaced : 0x35b7367b0984a1b40e1d671beb4b152c2c560bb30dc86d70766370c175062cb3"}
+{"level":"info","ts":1694490035.7667606,"msg":"Start training model, orderId: 39393931363934343930303332383733"}
+{"level":"info","ts":1694490035.7669125,"msg":"Start training model, orderPlacedMetadata: {{6 5EAVXkeQX5YC9yVU31kcB1hHi4WVudxo8RSXgmohQQBSg4uq 0xb711ebf34e474f4db43198e23a59d436 {b711ebf34e474f4db43198e23a59d436 5EAVXkeQX5YC9yVU31kcB1hHi4WVudxo8RSXgmohQQBSg4uq  {11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz 6 2591.998} {/home/thirteenggh/model 922.76886} 90 {7.6436577} {3090 1} {Hong Kong KKT Kwun Tong} {16.43 Mbit/s 53.77 Mbit/s} {2.0250526e+10}} 1 1 24 100 0 0 0 3090 0 Hong Kong 2.0250526e+10 5EAVX...Sg4uq e23a59d436 11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz 8GB 923GB 53.77 Mbit/s 16.43 Mbit/s} {test222 test222 0.1   http://172.16.2.232:3000/buy/0xb711ebf34e474f4db43198e23a59d436    10 docker 2023-09-12 11:40:32 2023-09-12 11:40:32   }}"}
+{"level":"error","ts":1694490036.287931,"msg":"Container operation failed\nError response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'\nnvidia-container-cli: initialization error: WSL environment detected but no adapters were found: unknown"}
+{"level":"info","ts":1694490041.427337,"msg":"------------------ Extrinsic completed ------------------ \n 0x8ba3ee854f4bd69dbe81e3921699039476f05b618996ae1631296fed0f579747"}
+{"level":"info","ts":1694490041.8294284,"msg":"order failed bingo!!!"}
+{"level":"info","ts":1694500725.9181876,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694500733.6305783,"msg":"------------------ Extrinsic completed ------------------ \n 0xea6bef4e21a1ad2292750f34bccac0ca72c435490153a389973886abc0a73649"}
+{"level":"info","ts":1694500734.1040938,"msg":"Machine Removed bingo!!!"}
+{"level":"info","ts":1694577495.1027236,"msg":"-------------------- start --------------------"}
+{"level":"error","ts":1694577537.562,"msg":"error : Wait pulling image: exit status 1"}
+{"level":"error","ts":1694577537.562095,"msg":"error : Wait pulling image: exit status 1"}
+{"level":"info","ts":1694577647.3289607,"msg":"-------------------- start --------------------"}
+{"level":"error","ts":1694577651.4051073,"msg":"error getting hardware info: speedtest-cli not installed, Failed to execute command: exit status 1"}
+{"level":"error","ts":1694577651.4051743,"msg":"error getting hardware info: speedtest-cli not installed, Failed to execute command: exit status 1"}
+{"level":"info","ts":1694577729.582471,"msg":"-------------------- start --------------------"}
+{"level":"error","ts":1694577733.5818334,"msg":"error getting hardware info: speedtest-cli not installed, Failed to execute command: exit status 1"}
+{"level":"error","ts":1694577733.581909,"msg":"error getting hardware info: speedtest-cli not installed, Failed to execute command: exit status 1"}
+{"level":"info","ts":1694583618.665126,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694583659.955921,"msg":"------------------ Extrinsic completed ------------------ \n 0x7cced83c3eb6c8c118063892dad62ca536fceca45ad43dbde77ad9a04ed825d1"}
+{"level":"info","ts":1694583660.434778,"msg":"add machine bingo!!!"}
+{"level":"info","ts":1694583709.7306464,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694583720.0089152,"msg":"------------------ Extrinsic completed ------------------ \n 0xb327d860c458c906dde11a25280c4313a8be4d7994f917cbd410b8e5abf128e7"}
+{"level":"info","ts":1694583720.4206734,"msg":"Machine Removed bingo!!!"}
+{"level":"info","ts":1694583810.4923377,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694583863.96637,"msg":"------------------ Extrinsic completed ------------------ \n 0x78890967fd02be2df3d061e921949ac85ecdc0410f2a95d4c26caacfe9aee11c"}
+{"level":"info","ts":1694583864.4279127,"msg":"add machine bingo!!!"}
+{"level":"info","ts":1694583917.201865,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694583959.9914913,"msg":"------------------ Extrinsic completed ------------------ \n 0x8ae11d539e429a60fc5a007242397165b8ce7b6c2b57c82ac19bb270f009146f"}
+{"level":"info","ts":1694583960.4225326,"msg":"add machine bingo!!!"}
+{"level":"info","ts":1694584038.5495777,"msg":"-------------------- start --------------------"}
+{"level":"info","ts":1694584080.532017,"msg":"------------------ Extrinsic completed ------------------ \n 0xba3746124e78388008cd3137ec4d1d007e3ac328ecb29a8ea7c8406fa07b7cb2"}
+{"level":"info","ts":1694584080.9544058,"msg":"add machine bingo!!!"}

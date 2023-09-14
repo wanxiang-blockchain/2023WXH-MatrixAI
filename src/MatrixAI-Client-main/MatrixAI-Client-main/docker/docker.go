@@ -7,9 +7,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	"io"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 
@@ -20,7 +18,9 @@ import (
 )
 
 func RunTrainContainer(image string, dirpath string, orderId string) error {
-	logs.Normal("Start to run train container")
+	logs.Normal(fmt.Sprintf("Start to run train container, image: %v, dirpath: %v, orderId: %v", image, dirpath, orderId))
+
+	containerName := "train_container"
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -32,20 +32,12 @@ func RunTrainContainer(image string, dirpath string, orderId string) error {
 		return err
 	}
 
-	if !docker_utils.ImageExist(ctx, cli, image) {
-		cmd := exec.Command("docker", "pull", image)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-
-		if err := cmd.Start(); err != nil {
-			return fmt.Errorf("error : Start pulling image: %v", err)
-		}
-		if err := cmd.Wait(); err != nil {
-			return fmt.Errorf("error : Wait pulling image: %v", err)
-		}
+	err = docker_utils.PullImage(ctx, cli, image)
+	if err != nil {
+		return err
 	}
 
-	containerID, err := docker_utils.CreateContainer(ctx, cli, image, "",
+	containerID, err := docker_utils.CreateContainer(ctx, cli, image, containerName,
 		&container.Config{
 			Image: image,
 			Env:   []string{"MATRIX_PATH=" + dirpath},
@@ -98,7 +90,7 @@ func RunTrainContainer(image string, dirpath string, orderId string) error {
 		return fmt.Errorf("error writing container logs: %v", err)
 	}
 
-	_ = docker_utils.DeleteContainerAndImage(ctx, cli, containerID, image)
+	_ = docker_utils.DeleteContainerAndImage(ctx, cli, containerName, containerID, image)
 	return nil
 }
 
@@ -107,26 +99,24 @@ func RunScoreContainer() (float64, error) {
 
 	image := "hsiaojo/score:0.1"
 	containerName := "score_container"
+	score := 0.0
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
-		return 0, err
+		return score, err
 	}
 
-	if !docker_utils.ImageExist(ctx, cli, image) {
-		cmd := exec.Command("docker", "pull", image)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+	err = docker_utils.DeleteContainerAndImage(ctx, cli, containerName, "", image)
+	if err != nil {
+		return score, err
+	}
 
-		if err := cmd.Start(); err != nil {
-			return 0, err
-		}
-		if err := cmd.Wait(); err != nil {
-			return 0, err
-		}
+	err = docker_utils.PullImage(ctx, cli, image)
+	if err != nil {
+		return score, err
 	}
 
 	containerID, err := docker_utils.CreateContainer(ctx, cli, image, containerName,
@@ -147,20 +137,11 @@ func RunScoreContainer() (float64, error) {
 			},
 		})
 	if err != nil {
-		return 0, err
+		return score, err
 	}
 
 	if err := cli.ContainerStart(ctx, containerID, types.ContainerStartOptions{}); err != nil {
-		return 0, err
-	}
-
-	statusCh, errCh := cli.ContainerWait(ctx, containerID, container.WaitConditionNotRunning)
-	select {
-	case err := <-errCh:
-		if err != nil {
-			return 0, err
-		}
-	case <-statusCh:
+		return score, err
 	}
 
 	reader, err := cli.ContainerLogs(ctx, containerID, types.ContainerLogsOptions{
@@ -169,22 +150,35 @@ func RunScoreContainer() (float64, error) {
 		Follow:     true,
 		Timestamps: true})
 	if err != nil {
-		return 0, err
+		return score, err
 	}
 	defer reader.Close()
 
-	score := readScore(reader)
+	scanner1 := bufio.NewScanner(reader)
+	for scanner1.Scan() {
+		out := scanner1.Text()
+		logs.Normal("score logs : " + out)
 
-	stdcopy.StdCopy(os.Stdout, os.Stderr, reader)
-
+		index := strings.Index(out, "score:")
+		if index <= 0 {
+			logs.Normal("score logs : no score")
+		} else {
+			scoreStr := strings.TrimSpace(out[index+len("score:"):])
+			score, err = strconv.ParseFloat(scoreStr, 64)
+			if err != nil {
+				return score, err
+			}
+			return score, nil
+		}
+	}
 	return score, nil
 }
 
-func RunFixedContainer() (float64, error) {
-	logs.Normal("Start to run fixed container")
+func RunFixedContainer(dirpath string, orderId string, iters string, batchsize string, rate string) error {
+	logs.Normal(fmt.Sprintf("Start to run fixed container, dirpath: %v, orderId: %v", dirpath, orderId))
 
-	image := "hsiaojo/test:0.4"
-	containerName := image + "_container"
+	image := "hsiaojo/test:0.2"
+	containerName := "fixed_container"
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -193,77 +187,39 @@ func RunFixedContainer() (float64, error) {
 
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	_, err = cli.ImagePull(ctx, image, types.ImagePullOptions{})
+	err = docker_utils.PullImage(ctx, cli, image)
 	if err != nil {
-
-		cmd := exec.Command("docker", "pull", image)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		if err := cmd.Start(); err != nil {
-			return 0, err
-		}
-		if err := cmd.Wait(); err != nil {
-			return 0, err
-		}
+		return err
 	}
 
-	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
-	if err != nil {
-		return 0, err
-	}
-
-	isCreated := false
-	var containerID string
-
-loop:
-	for _, container := range containers {
-		for _, name := range container.Names {
-			if strings.Contains(name, containerName) {
-				isCreated = true
-				containerID = container.ID
-				break loop
-			}
-		}
-	}
-
-	if !isCreated {
-		resp, err := cli.ContainerCreate(
-			ctx,
-			&container.Config{
-				Image: image,
-			}, &container.HostConfig{
-				Resources: container.Resources{
-					DeviceRequests: []container.DeviceRequest{
-						{
-							Driver:       "nvidia",
-							Count:        -1,
-							DeviceIDs:    []string{},
-							Capabilities: [][]string{{"gpu"}},
-							Options:      nil,
-						},
+	containerID, err := docker_utils.CreateContainer(ctx, cli, image, containerName,
+		&container.Config{
+			Image: image,
+			Env:   []string{"MATRIX_PATH=" + dirpath},
+			Cmd:   []string{"python", "main.py", "--save-model", "--epochs", iters, "--batch-size", batchsize, "--lr", rate},
+		},
+		&container.HostConfig{
+			Resources: container.Resources{
+				DeviceRequests: []container.DeviceRequest{
+					{
+						Driver:       "nvidia",
+						Count:        -1,
+						DeviceIDs:    []string{},
+						Capabilities: [][]string{{"gpu"}},
+						Options:      nil,
 					},
 				},
-			}, nil, nil, containerName)
-		if err != nil {
-			return 0, err
-		}
-		containerID = resp.ID
+			},
+		})
+	if err != nil {
+		return err
 	}
 
 	if err := cli.ContainerStart(ctx, containerID, types.ContainerStartOptions{}); err != nil {
-		return 0, err
-	}
-
-	statusCh, errCh := cli.ContainerWait(ctx, containerID, container.WaitConditionNotRunning)
-	select {
-	case err := <-errCh:
-		if err != nil {
-			return 0, err
-		}
-	case <-statusCh:
+		return err
 	}
 
 	reader, err := cli.ContainerLogs(ctx, containerID, types.ContainerLogsOptions{
@@ -272,24 +228,24 @@ loop:
 		Follow:     true,
 		Timestamps: true})
 	if err != nil {
-		return 0, err
+		return err
 	}
 	defer reader.Close()
 
-	score := readScore(reader)
-	stdcopy.StdCopy(os.Stdout, os.Stderr, reader)
-	return score, nil
-}
+	containerLogs := "containerLogs.txt"
 
-func readScore(rd io.Reader) float64 {
-
-	scanner := bufio.NewScanner(rd)
-	var lastLine string
-	for scanner.Scan() {
-		lastLine = scanner.Text()
+	logFile, err := os.Create(containerLogs)
+	if err != nil {
+		panic(err)
 	}
+	defer logFile.Close()
 
-	// 直接解析最后一行（输出的分数）为浮点数
-	score, _ := strconv.ParseFloat(lastLine, 64)
-	return score
+	go utils.ReadLogsAndSend(containerLogs, orderId)
+	stdcopy.StdCopy(logFile, logFile, reader)
+
+	_, err = logFile.WriteString("\nContainer Completed\n")
+	if err != nil {
+		return fmt.Errorf("error writing container logs: %v", err)
+	}
+	return nil
 }
