@@ -1,11 +1,7 @@
 import cache from "../utils/store";
 import * as utils from "../utils";
 import webconfig from "../webconfig";
-import {
-  formatAddress,
-  formatAddressLong,
-  formatBalance,
-} from "../utils/formatter";
+import { formatAddress, formatBalance } from "../utils/formatter";
 
 export async function getMachineDetailById(id) {
   let obj = cache.get("all-machine-list");
@@ -50,7 +46,7 @@ export async function getFilterData() {
     });
   }
   list.push({
-    name: "Sort",
+    name: "OrderBy",
     arr: [
       { label: "Auto Sort", value: "all" },
       { label: "Price(Inc.)", value: "price" },
@@ -127,12 +123,18 @@ function formatMachine(item) {
       item.Metadata = JSON.parse(item.Metadata);
     }
     item.Addr = formatAddress(item.Owner);
-    item.UuidShort = eval(item.Uuid).toString(16).slice(0, 10);
+    item.UuidShort = item.Uuid.slice(-10);
     item.Cpu = item.Metadata?.CPUInfo?.ModelName;
     item.RAM = item.Metadata?.InfoMemory?.RAM.toFixed(0) + "GB";
     item.AvailHardDrive = item.Metadata?.DiskInfo?.TotalSpace.toFixed(0) + "GB";
     item.UploadSpeed = item.Metadata?.SpeedInfo?.Upload;
     item.DownloadSpeed = item.Metadata?.SpeedInfo?.Download;
     item.Price = formatBalance(item.Price);
+    if((item.CompletedCount + item.FailedCount)<=0){
+      item.Reliability="--";
+    }else{
+      item.Reliability =parseInt(item.CompletedCount*100 / (item.CompletedCount + item.FailedCount))+'%';
+    }
+    item.TFLOPS=item.Tflops;
   } catch (e) {}
 }

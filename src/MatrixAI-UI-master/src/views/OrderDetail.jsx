@@ -10,7 +10,7 @@ import {
   GlobalOutlined,
 } from "@ant-design/icons";
 import { Input, Alert, Button, message, Spin, Empty } from "antd";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PolkadotLogo from "../statics/polkadot-logo.svg";
 import { getAPI, getKeyring } from "../utils/polkadot";
 import { formatAddress } from "../utils";
@@ -31,8 +31,14 @@ import {
 } from "../utils/format-show-type";
 import { getDetailByUuid, getLogList } from "../services/order";
 import Footer from "../components/footer";
+import { Terminal } from "xterm";
+import { FitAddon } from "xterm-addon-fit";
+import { WebLinksAddon } from "xterm-addon-web-links";
+import { XTerm } from "xterm-for-react";
+const showLogType = "xterm";
 
 function Home({ className }) {
+  const xtermRef = useRef(null);
   const { id } = useParams();
   document.title = "Order detail";
   let navigate = useNavigate();
@@ -58,6 +64,11 @@ function Home({ className }) {
     console.log(res);
     setLogs(res.list);
     setLoadingLog(false);
+    if (showLogType == "xterm") {
+      setTimeout(function () {
+        initTerm(res.list);
+      }, 1000);
+    }
   };
 
   useEffect(() => {
@@ -74,6 +85,26 @@ function Home({ className }) {
     loadDetail();
   }, [id]);
 
+  const initTerm = (list) => {
+    // const terminal = new Terminal();
+    // const fitAddon = new FitAddon();
+    // terminal.loadAddon(new WebLinksAddon());
+    // terminal.loadAddon(fitAddon);
+    // terminal.open(document.getElementById("terminal"));
+    // fitAddon.fit();
+    // list.forEach((t) => {
+    //   t.ContentArr.forEach((c) => {
+    //     console.log(c)
+    //     if(c) terminal.writeln(c);
+    //   });
+    // });
+
+    list.forEach((t) => {
+      t.ContentArr.forEach((c) => {
+        xtermRef.current.terminal.writeln(c);
+      });
+    });
+  };
 
   return (
     <div className={className}>
@@ -98,7 +129,7 @@ function Home({ className }) {
                           "x " +
                           record.Metadata.machineInfo.Gpu}
                       </span>
-                      <span>{record.TFLOPS || "--"} TFLOPS</span>
+                      <span>{record.Metadata.machineInfo.TFLOPS || "--"} TFLOPS</span>
                     </div>
                     <div className="r">
                       <span>Region</span>
@@ -112,9 +143,7 @@ function Home({ className }) {
                     </div>
                     <div className="r">
                       <span>Reliability</span>
-                      <span>
-                        {record.Metadata.machineInfo.Reliability || "--"}
-                      </span>
+                      <span>{record.Metadata.machineInfo.Reliability}</span>
                     </div>
                   </div>
                   <div className="line">
@@ -124,7 +153,7 @@ function Home({ className }) {
                     </div>
                     <div className="r">
                       <span>CPS</span>
-                      <span>{record.Metadata.machineInfo.CPS || "--"}</span>
+                      <span>{record.Metadata.machineInfo.Score}</span>
                     </div>
                   </div>
                   <div className="line">
@@ -175,10 +204,20 @@ function Home({ className }) {
                       <span>Provider</span>
                       <span>{record.Seller}</span>
                     </div>
-                    <div className="r">
-                      <span>Libery</span>
-                      <span>{record.Metadata.formData.libery}</span>
-                    </div>
+                    {record.Metadata.formData.imageName ? (
+                      <div className="r">
+                        <span>Docker Image</span>
+                        <span>
+                          {record.Metadata.formData.imageName} :{" "}
+                          {record.Metadata.formData.imageTag}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="r">
+                        <span>Libery</span>
+                        <span>{record.Metadata.formData.libery}</span>
+                      </div>
+                    )}
                   </div>
                   <div className="line">
                     <div className="l">
@@ -187,7 +226,7 @@ function Home({ className }) {
                     </div>
                     <div className="r">
                       <span>Dataset URL</span>
-                      <span>{record.Metadata.formData.batchsize}</span>
+                      <span>{record.Metadata.formData.dataUrl}</span>
                     </div>
                   </div>
                   <div className="line">
@@ -232,12 +271,27 @@ function Home({ className }) {
                   <span className="pointer" onClick={() => setShowLogs(true)}>
                     LOG
                   </span>
-                  <label
-                    className="pointer"
-                    onClick={() => navigate("/extend-duration/"+record.Uuid)}
-                  >
-                    Extend Duration
-                  </label>
+                  {record.Status == 0 ? (
+                    <label
+                      className="pointer"
+                      onClick={() =>
+                        navigate("/extend-duration/" + record.Uuid)
+                      }
+                    >
+                      Extend Duration
+                    </label>
+                  ) : record.Status == 1&& record.Metadata.formData.libType=='lib'? (
+                    <label
+                      className="pointer"
+                      onClick={() =>
+                        window.open(record.Metadata.formData.modelUrl)
+                      }
+                    >
+                      Download Result
+                    </label>
+                  ) : (
+                    <label className="disable">Extend Duration</label>
+                  )}
                 </div>
               </div>
             </div>
@@ -246,39 +300,38 @@ function Home({ className }) {
           )}
         </div>
       </div>
-      {showLogs ? (
-        <div className="log-box">
-          <div className="log-header">
-            <div className="log-header-con">
-              Log
-              <div className="log-btn">
-                <span onClick={loadLogs} title="Refresh">
-                  <i className={loadingLog ? "rotate" : ""}></i>
-                </span>
-                <label onClick={() => setShowLogs(false)} title="Close">
-                  <i></i>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className="log-body">
-            <div className="log-list">
-              {logs.length == 0 ? <div className="log-item">No Data</div> : ""}
-              {logs.map((l) => {
-                return (
-                  <div className="log-item">
-                    <span>{l.CreatedAtStr}</span>
-                    <label>{l.Content}</label>
-                  </div>
-                );
-              })}
+      <div className={showLogs ? "log-box is-show" : "log-box"}>
+        <div className="log-header">
+          <div className="log-header-con">
+            Log
+            <div className="log-btn">
+              <span onClick={loadLogs} title="Refresh">
+                <i className={loadingLog ? "rotate" : ""}></i>
+              </span>
+              <label onClick={() => setShowLogs(false)} title="Close">
+                <i></i>
+              </label>
             </div>
           </div>
         </div>
-      ) : (
-        ""
-      )}
-
+        <div className="log-body">
+          <div className="log-list">
+            {logs.length == 0 ? <div className="log-item">No Data</div> : ""}
+            <XTerm ref={xtermRef} />
+            {/* {showLogType != "xterm" &&
+              logs.map((l,i) => {
+                return (
+                  <div className="log-item" key={i}>
+                    <span>{l.CreatedAtStr}</span>
+                    {l.ContentArr.map((t,j) => {
+                      return <label key={j}>{t}</label>;
+                    })}
+                  </div>
+                );
+              })} */}
+          </div>
+        </div>
+      </div>
       <Footer />
     </div>
   );
@@ -288,15 +341,19 @@ export default styled(Home)`
   display: block;
   background-color: #000;
   color: #fff;
+  .is-show {
+    bottom: 0 !important;
+  }
   .log-box {
     position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: -2000px;
     display: block;
     overflow: hidden;
     z-index: 999;
     background-color: #0f0f0f;
     width: 100%;
+    transition: bottom 0.5s;
     .log-header {
       width: 100%;
       height: 40px;
@@ -358,27 +415,29 @@ export default styled(Home)`
       .log-list {
         width: 1160px;
         padding: 20px;
-        background-color: #222222;
+        background-color: #000;
         margin: 50px auto;
         height: 400px;
         display: block;
         overflow: hidden;
         border-radius: 5px;
-        overflow-y: auto;
         .log-item {
           display: block;
           overflow: hidden;
           word-wrap: break-word;
           clear: both;
           font-size: 14px;
-          
+
           line-height: 24px;
-          span{
-            padding-right:10px;
+          span {
+            padding-right: 10px;
             color: #797979;
           }
-          label{
+          label {
             color: #fff;
+            display: block;
+            overflow: hidden;
+            clear: both;
           }
         }
       }
@@ -490,7 +549,8 @@ export default styled(Home)`
       flex-direction: row;
       align-items: center;
       span,
-      label {
+      .pointer,
+      .disable {
         width: 150px;
         height: 30px;
         line-height: 30px;
@@ -503,8 +563,18 @@ export default styled(Home)`
       span {
         background-color: #e0c5bd;
       }
-      label {
+      span:hover {
+        background-color: #f7dfd8;
+      }
+      .pointer {
         background-color: #92d5e1;
+      }
+      .pointer:hover {
+        background-color: #bae5ee !important;
+      }
+      .disable {
+        cursor: not-allowed;
+        background-color: #2f2f2f;
       }
     }
   }

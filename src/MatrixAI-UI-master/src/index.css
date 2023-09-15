@@ -10,6 +10,9 @@ code {
     monospace;
 }
 .ant-btn-primary{
-  background-color: rgb(211,243,108)!important;
+  background-color: #92d5e1 !important;
   color:#000!important;
+}
+.ant-btn-primary:hover{
+  background-color: #bae5ee !important;
 }

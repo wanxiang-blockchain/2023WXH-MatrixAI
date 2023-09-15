@@ -30,54 +30,77 @@ import {
   formatDataSource,
 } from "../utils/format-show-type";
 import { refreshBalance } from "../services/account";
+import { getMachineDetailByUuid } from "../services/machine";
 
-let inputValues={
-  price:0,
-  duration:0,
-  disk:0
+let inputValues = {
+  price: 0,
+  duration: 0,
+  disk: 0,
 };
 
 function Home({ className }) {
   const { id } = useParams();
   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [deviceDetail, setDeviceDetail] = useState({});
+  const [maxStorge, setMaxStorge] = useState(0);
+
+  const init = async () => {
+    let detail = await getMachineDetailByUuid(id);
+    if (detail) {
+      setDeviceDetail(detail);
+      setMaxStorge(parseInt(detail.Metadata?.DiskInfo?.TotalSpace));
+      // if (t.addr == addr) {
+      //   util.alert("Unable to purchase one's own machine");
+      //   navigate("/market/");
+      // }
+    }
+    console.log("***********device detail*****************");
+    console.log(detail);
+  };
 
   useEffect(() => {
     document.title = "Make Offer";
     let addr = localStorage.getItem("addr");
-    if(!addr){
+    if (!addr) {
       window.showLoginBox();
     }
+    init();    
   }, [id]);
-  const onInput = (e,n) => {
+  const onInput = (e, n) => {
     let v = parseInt(e.target.value);
-    if(!e.target.value||isNaN(e.target.value)){
-      v=0;
+    if (!e.target.value || isNaN(e.target.value)) {
+      v = 0;
     }
-    inputValues[n]=v;    
+    inputValues[n] = v;
   };
   const onSubmit = async () => {
-    let tprice=inputValues.price*1000000000000;
-    let maxDuration=inputValues.duration;
-    let disk=inputValues.disk;
+    let tprice = inputValues.price * 1000000000000;
+    let maxDuration = inputValues.duration;
+    let disk = inputValues.disk;
     if (tprice <= 0) {
       return util.showError("The price must be an integer greater than 0");
     }
     if (maxDuration <= 0) {
-      return util.showError("The max duration must be an integer greater than 0");
+      return util.showError(
+        "The max duration must be an integer greater than 0"
+      );
     }
     if (disk <= 0) {
       return util.showError("The disk must be an integer greater than 0");
     }
+    if (disk > maxStorge) {
+      return util.showError("Max storage is " + maxStorge+'GB.');
+    }
 
     util.loading(true);
-    setLoading(true);        
+    setLoading(true);
     let api = await getAPI();
     let addr = localStorage.getItem("addr");
     await web3Enable("my cool dapp");
     const injector = await web3FromAddress(addr);
     api.tx.hashrateMarket
-      .makeOffer(id, tprice,maxDuration,disk)
+      .makeOffer(id, tprice, maxDuration, disk)
       .signAndSend(
         addr,
         { signer: injector.signer },
@@ -124,7 +147,7 @@ function Home({ className }) {
           <div className="form-row">
             <div className="row-txt">Price (per hour)</div>
             <Input
-              onChange={(e)=>onInput(e,'price')}
+              onChange={(e) => onInput(e, "price")}
               type="number"
               className="my-input"
               placeholder="Enter an integer"
@@ -135,21 +158,19 @@ function Home({ className }) {
           <div className="form-row">
             <div className="row-txt">Max duration</div>
             <Input
-             onChange={(e)=>onInput(e,'duration')}
+              onChange={(e) => onInput(e, "duration")}
               type="number"
               className="my-input"
               placeholder="Enter an integer"
               max={99999}
             />
-            <span className="uni">Day</span>
+            <span className="uni">Hour</span>
           </div>
           <div className="form-row">
             <div className="row-txt">Max disk storage</div>
-            <div className="row-title2">
-            Avail Disk Storage:  15,000GB
-            </div>
+            <div className="row-title2">Avail Disk Storage: {maxStorge}GB</div>
             <Input
-              onChange={(e)=>onInput(e,'disk')}
+              onChange={(e) => onInput(e, "disk")}
               type="number"
               className="my-input"
               placeholder="Enter an integer"
@@ -169,7 +190,7 @@ function Home({ className }) {
               loading={loading}
               disabled={loading}
               type="primary"
-              style={{marginTop:30}}
+              style={{ marginTop: 30 }}
               onClick={onSubmit}
               className="cbtn"
             >
@@ -191,31 +212,31 @@ export default styled(Home)`
   .mini-btn {
     border: 1px solid #fff;
   }
-  .drow{
+  .drow {
     display: flex !important;
     align-items: center;
     flex-direction: row;
     justify-content: flex-start;
     width: 200px;
-    margin-top: 20px
+    margin-top: 20px;
   }
-  .uni{
+  .uni {
     position: absolute;
     bottom: 16px;
     font-size: 14px;
     right: 15px;
     color: #fff;
   }
-  .row-title2{
-    font-size:14px;
-    color:#E0C4BD;
+  .row-title2 {
+    font-size: 14px;
+    color: #e0c4bd;
     line-height: 24px;
     display: block;
     margin-bottom: 10px;
   }
   .con {
     width: 1200px;
-    padding:0 20px;
+    padding: 0 20px;
     margin: 10px auto;
     display: block;
     overflow: hidden;
@@ -247,7 +268,7 @@ export default styled(Home)`
     color: #000;
     height: 50px;
     line-height: 40px;
-    width:130px;
+    width: 130px;
   }
   .mytable {
     display: table;

@@ -51,7 +51,7 @@ function Home({ className }) {
   const loadList = async (curr) => {
     setLoading(true);
     let res = await getOrderList(curr, filter);
-    console.log("List", res);
+    console.log("Order List", res);
     setTotal(res.total);
     setList(res.list);
     setLoading(false);

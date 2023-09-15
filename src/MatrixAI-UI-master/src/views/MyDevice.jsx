@@ -102,7 +102,7 @@ function Home({ className }) {
   const loadList = async () => {
     setLoading(true);
     let res = await getMachineList(true, 1);
-    console.log("List", res);
+    console.log("Device List", res);
     setList(res.list);
     setLoading(false);
   };

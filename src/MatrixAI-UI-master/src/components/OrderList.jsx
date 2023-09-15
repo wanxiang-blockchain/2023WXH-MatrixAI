@@ -33,15 +33,18 @@ function Header({ className, list, loading }) {
       width: "10%",
       key: "TaskName",
       render: (text, record, index) => {
-        return record.Metadata?.taskName || "--";
+        return record.Metadata?.formData?.taskName || "--";
       },
     },
     {
-      title: "Libery",
+      title: "Libery/Docker",
       width: "10%",
       key: "Libery",
       render: (text, record, index) => {
-        return record.Metadata?.algorithm;
+        return (
+          record.Metadata?.formData?.imageName?record.Metadata?.formData?.imageName+':'+record.Metadata?.formData?.imageTag:
+          record.Metadata?.formData?.libery
+        );
       },
     },
     {
@@ -169,7 +172,7 @@ export default styled(Header)`
   .mini-btn {
     color: #171717;
     border-radius: 4px;
-    padding: 0 24px;
+    padding: 0 11px;
     height: 31px;
     line-height: 31px;
     cursor: pointer;
@@ -178,6 +181,9 @@ export default styled(Header)`
     display: inline-block;
     text-align: center;
     overflow: hidden;
+  }
+  .mini-btn:hover {
+    background-color: #bae5ee !important;
   }
   .spin-box {
     width: 100%;

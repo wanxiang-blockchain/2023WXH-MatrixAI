@@ -17,6 +17,7 @@ import {
   formatDataSource,
 } from "../utils/format-show-type";
 import { refreshBalance } from "../services/account";
+import { formatterSize } from "../utils/formatter";
 
 function Header({ className, list, isMyDevice, loading,reloadFunc }) {
   let navigate = useNavigate();
@@ -83,7 +84,7 @@ function Header({ className, list, isMyDevice, loading,reloadFunc }) {
             <div className="id"># {record.UuidShort}</div>
             <div className="reliability">
               <span className="l">
-                <label>{record.Reliability || "--"}</label>
+                <label>{record.Reliability}</label>
                 <span>Reliability</span>
               </span>
               <span className="r">
@@ -110,7 +111,7 @@ function Header({ className, list, isMyDevice, loading,reloadFunc }) {
             <div className="graphicsCoprocessor">#{record.Cpu}</div>
             <div className="more">
               <span className="l">
-                <label>{record.TFLOPS || "--"}</label>
+                <label>{record.Tflops || "--"}</label>
                 <span>TFLOPS</span>
               </span>
               <span className="l">
@@ -118,12 +119,12 @@ function Header({ className, list, isMyDevice, loading,reloadFunc }) {
                 <span>RAM</span>
               </span>
               <span className="l">
-                <label>{record.Disk} GB</label>
+                <label>{ record.Disk||parseInt(record.Metadata.DiskInfo.TotalSpace) } GB</label>
                 <span>Avail Disk Storage</span>
               </span>
             </div>
             <div className="dura">
-              <label>Max Duration: {record.MaxDuration}</label>
+              <label>Max Duration: {record.MaxDuration}h</label>
               <span>
                 <img className="t180" src="/img/market/u26.svg" />{" "}
                 {record.UploadSpeed}
@@ -494,7 +495,7 @@ export default styled(Header)`
         width: 200px;
       }
       span {
-        width: 120px;
+        width: 200px;
         text-indent: 20px;
         img {
           width: 11px;
@@ -504,7 +505,7 @@ export default styled(Header)`
         background-size: 10px;
         background-position: left;
         background-repeat: no-repeat;
-        width: 120px;
+        width: 200px;
         text-indent: 20px;
         position: relative;
         top: 0;

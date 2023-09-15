@@ -23,6 +23,12 @@ body {
 .cbtn:hover{
   background-color: #bae5ee !important;
 }
+.cbtn2{
+  background-color: #92d5e1 !important;
+}
+.cbtn2:hover{
+  background-color: #bae5ee !important;
+}
 @keyframes rotate {
   from {
     transform: rotate(0deg);
@@ -76,9 +82,17 @@ body {
     transform: rotate(360deg);
   }
 }
-
+.login-modal{
+  background-color: #000;
+  border:1px solid rgba(64, 64, 64, 1);
+  border-radius: 5px;
+  .ant-modal-content{
+    background-color: #000!important;
+  }
+}
 .login-box {
-  padding: 30px;
+  padding: 60px 30px;
+  background-color: #000;  
 
   .big-title {
     font-family: 'Montserrat Bold', 'Montserrat', sans-serif;
@@ -101,7 +115,7 @@ body {
   }
 
   .login-line {
-    width: 90%;
+    width: 600px;
     padding: 10px 20px;
     display: flex;
     overflow: hidden;
@@ -121,16 +135,26 @@ body {
   }
 
   .login-line span {
-    width: 50%;
-    text-align: center;
+    width: 73%;
+    text-align: left;
+    margin-left: 28px;
   }
 
   .login-line label {
-    width: 30%;
+    width: 107px;
     text-align: center;
     background: #92d5e1;
-    float: right;
     color: #000;
+    font-size: 14px;
+    height: 24px;
+    line-height: 24px;
+    border-radius: 5px;
+    float: right;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+  .login-line label:hover{
+    background-color: #bae5ee;
   }
 }
 

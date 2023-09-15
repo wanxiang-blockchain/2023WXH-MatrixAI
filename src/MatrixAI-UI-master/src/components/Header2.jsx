@@ -352,6 +352,7 @@ function Header({ className }) {
       <Modal
         className="login-modal"
         width={1000}
+        bodyStyle={{backgroundColor:"#000"}}
         open={isModalOpen}
         onOk={() => setModalOpen(false)}
         onCancel={() => {
@@ -370,7 +371,7 @@ function Header({ className }) {
           </p>
           <p></p>
           <div className="login-line" onClick={onLogin}>
-            <img src={PolkadotLogo} />
+            <img src="/img/market/u14.svg" />
             <span>polkadot{"{.js}"} extension</span>
             <label>Polkadot</label>
           </div>

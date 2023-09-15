@@ -3,11 +3,11 @@ import cache from "../utils/store";
 import * as util from "../utils";
 import { refreshBalance } from "./account";
 import moment from "moment";
-import { getMachineList, getMachineDetailByUuid } from "./machine";
 import webconfig from "../webconfig";
 import { formatAddress, formatBalance } from "../utils/formatter";
 import { web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
 import { getTimeDiff } from "time-difference-js";
+
 
 export async function getOrderList(pageIndex, filter) {
   try {
@@ -65,8 +65,11 @@ function formatOrder(item) {
     item.Seller = formatAddress(item.Seller);
     item.Price = formatBalance(item.Price);
     item.Total = formatBalance(item.Total);
+
     if (item.Status == 0) {
-      let endTime = moment(item.OrderTime).add(item.Duration, "hours").toDate();
+      // console.log('orderTime',item.Metadata.formData.orderTime);
+      // console.log('duration',item.Metadata.formData.duration);
+      let endTime = moment(item.Metadata.formData.orderTime).add(item.Metadata.formData.duration, "hours").toDate();
       let result = getTimeDiff(new Date(), endTime);
       item.RemainingTime = result.value + " " + result.suffix;
     } else {
@@ -117,8 +120,12 @@ export async function placeOrder(machineInfo, formData, total, cb) {
   orderId = "999" + orderId.toString();
   let seller = machineInfo.Owner;
   let machineId = machineInfo.Uuid;
-  formData.buyTime = moment().format("YYYY-MM-DD HH:mm:ss");
+  formData.buyTime = new Date();
+  formData.orderTime =new Date();
   let metadata = JSON.stringify({ machineInfo, formData });
+
+  console.log('******************metadata*************************')
+  console.log(metadata);
   util.loading(true);
   let api = await getAPI();
   let addr = localStorage.getItem("addr");
@@ -205,31 +212,19 @@ export async function renewOrder(orderId, duration, cb) {
 
 export async function getLiberyList() {
   return [
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
+    { label: "pytorch", value: "pytorch" }
   ];
 }
 export async function getModelList() {
   return [
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
-    { label: "aaaaaa", value: "aaaaaaa" },
+    { label: "mnist_rnn", value: "mnist_rnn" },
+    { label: "word_language_model", value: "word_language_model" }
   ];
 }
 export async function getLogList(orderUuid, pageIndex, pageSize) {
   try {
-    orderUuid='0xb711ebf34e474f4db43198e23a59d433';
+    // orderUuid='0xb711ebf34e474f4db43198e23a59d433';
+    // orderUuid=orderUuid.slice(2);
 
     let obj = cache.get("log-list");
     if (webconfig.isDebug && obj) {
@@ -250,8 +245,10 @@ export async function getLogList(orderUuid, pageIndex, pageSize) {
     }
     let total = ret.Data.Total;
     let list = ret.Data.List;
+    let arr=[];
     for (let item of list) {
       item.CreatedAtStr = moment(item.CreatedAt).format("MM-DD HH:mm:ss");
+      item.ContentArr=item.Content.split('\r').join('\n').split('\n');
     }
     console.log(list);
     obj = { list, total };

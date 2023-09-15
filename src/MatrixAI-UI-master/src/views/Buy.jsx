@@ -33,8 +33,23 @@ import { getMachineDetailByUuid } from "../services/machine";
 import { placeOrder, getLiberyList, getModelList } from "../services/order";
 import Footer from "../components/footer";
 import store from "../utils/store";
+import { type } from "@testing-library/user-event/dist/type";
 
-let formData = {};
+let formData = {
+  "taskName": "",
+  "libery": "",
+  "model": "",
+  "dataUrl": "",
+  "iters": "",
+  "batchsize": "",
+  "rate": "",
+  "duration": 0,
+  "imageName": "",
+  "imageTag": "",
+  "libType": "",
+  "buyTime": "",
+  "orderTime": ""
+};
 
 function Home({ className }) {
   const { id } = useParams();
@@ -47,6 +62,7 @@ function Home({ className }) {
   const [tab, setTab] = useState(1);
   const [popuStatus, setPopuStatus] = useState(0);
   const [deviceDetail, setDeviceDetail] = useState({});
+  const [libType, setLibType] = useState("lib");
 
   const [liberys, setLiberys] = useState([]);
   const [models, setModels] = useState([]);
@@ -55,7 +71,7 @@ function Home({ className }) {
     let v = e.target.value;
     let n = e.target.dataset.name;
     formData[n] = v;
-    if (n == "duration" && v) {
+    if (n == "duration" && v && !isNaN(v)) {
       v = parseInt(v);
       if (v <= 0) {
         setAmount(0);
@@ -101,27 +117,38 @@ function Home({ className }) {
     if (!formData.duration) {
       return "Duration is required.";
     }
-    if (!formData.libery) {
-      return "Libery is required.";
-    }
-    if (!formData.model) {
-      return "Model is required.";
-    }
     if (!formData.dataUrl) {
       return "DATA uploading link is required.";
     }
-    if (!formData.iters) {
-      return "Iters is required.";
-    }
-    if (!formData.batchsize) {
-      return "Batchsize is required.";
-    }
-    if (!formData.rate) {
-      return "Learning Rate  is required.";
-    }
+
     if (amount == 0) {
       return "Payment token greater than 0.";
     }
+    if (libType == "lib") {
+      if (!formData.libery) {
+        return "Libery is required.";
+      }
+      if (!formData.model) {
+        return "Model is required.";
+      }
+      if (!formData.iters) {
+        return "Iters is required.";
+      }
+      if (!formData.batchsize) {
+        return "Batchsize is required.";
+      }
+      if (!formData.rate) {
+        return "Learning Rate  is required.";
+      }
+    } else {
+      if (!formData.imageName) {
+        return "ImageName  is required.";
+      }
+      if (!formData.imageTag) {
+        return "ImageTag  is required.";
+      }
+    }
+    formData.libType=libType;
     // if (amount / 1000000000000 > balance) {
     //   return "Payment token greater than balance.";
     // }
@@ -142,6 +169,9 @@ function Home({ className }) {
       } else {
       }
     });
+  };
+  const onChangeLib = (type) => {
+    setLibType(type);
   };
 
   return (
@@ -227,23 +257,65 @@ function Home({ className }) {
             />
           </div>
           <div className="form-row">
+            <div className="sel-out">
+              <div
+                className={
+                  libType == "lib" ? "sel-box lib-curr curr" : "sel-box lib"
+                }
+                onClick={() => onChangeLib("lib")}
+              >
+                Use Built-in Libery
+              </div>
+              <div
+                className={
+                  libType == "docker"
+                    ? "sel-box docker-curr curr"
+                    : "sel-box docker"
+                }
+                onClick={() => onChangeLib("docker")}
+              >
+                Use Image From Dockerhub
+              </div>
+            </div>
+          </div>
+          <div className={libType == "docker" ? "form-row" : "form-row none"}>
+            <div className="row-txt">Image Name </div>
+            <Input
+              onChange={onInput}
+              className="my-input"
+              data-name="imageName"
+            />
+          </div>
+          <div className={libType == "docker" ? "form-row" : "form-row none"}>
+            <div className="row-txt">Image Tag </div>
+            <Input
+              onChange={onInput}
+              className="my-input"
+              data-name="imageTag"
+            />
+          </div>
+          <div className={libType == "lib" ? "form-row" : "form-row none"}>
             <div className="row-txt">Libery </div>
             <select className="my-select" data-name="libery" onChange={onInput}>
               <option value="">-select Libery-</option>
               {liberys.map((t, i) => {
                 return (
-                  <option value={t.value} key={i}>{t.label}</option>
+                  <option value={t.value} key={i}>
+                    {t.label}
+                  </option>
                 );
               })}
             </select>
           </div>
-          <div className="form-row">
+          <div className={libType == "lib" ? "form-row" : "form-row none"}>
             <div className="row-txt">Model </div>
             <select className="my-select" data-name="model" onChange={onInput}>
               <option value="">-select Model-</option>
               {models.map((t, i) => {
                 return (
-                  <option value={t.value} key={i}>{t.label}</option>
+                  <option value={t.value} key={i}>
+                    {t.label}
+                  </option>
                 );
               })}
             </select>
@@ -267,9 +339,9 @@ function Home({ className }) {
               the dataset, then get the data sharing URL.
             </div>
           </div>
-          <div className="row-line">
+          <div className={libType == "lib" ? "row-line" : "row-line none"}>
             <div className="form-row">
-              <div className="row-txt">Iters </div>
+              <div className="row-txt">Epochs </div>
               <Input
                 type="number"
                 className="my-input"
@@ -291,7 +363,7 @@ function Home({ className }) {
               />
             </div>
           </div>
-          <div className="form-row">
+          <div className={libType == "lib" ? "form-row" : "form-row none"}>
             <div className="row-txt">Learning Rate </div>
             <Input onChange={onInput} className="my-input" data-name="rate" />
           </div>
@@ -299,7 +371,7 @@ function Home({ className }) {
             <Button
               loading={loading}
               disabled={loading}
-              className="sub-btn"
+              className="sub-btn cbtn2"
               style={{ width: 154, marginTop: 33 }}
               type="primary"
               onClick={() => {
@@ -372,7 +444,7 @@ function Home({ className }) {
           </div>
           <div className="b-box">
             <div className="row">
-              <b>5</b> h
+              <b>1</b> h
             </div>
             <div className="row">Estimate the computing time</div>
           </div>
@@ -427,9 +499,58 @@ export default styled(Home)`
   .pross-box {
     display: none;
   }
-  .sub-btn:hover {
-    /* background-color: rgba(186, 229, 238, 1); */
-    background-color: red;
+  .none {
+    display: none !important;
+  }
+  .sel-out {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    flex-direction: row;
+    padding: 20px 0 10px;
+    justify-content: space-between;
+    .sel-box {
+      width: 270px;
+      height: 100px;
+      border-width: 1px;
+      border-style: solid;
+      border-radius: 5px;
+      font-size: 14px;
+      background-repeat: no-repeat;
+      background-size: 40px;
+      background-position: center 10px;
+      display: block;
+      overflow: hidden;
+      line-height: 140px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .lib {
+      color: #dddddd;
+      background-color: rgba(32, 32, 32, 1);
+      border-color: rgba(121, 121, 121, 1);
+      background-image: url(/img/market/lib.svg);
+    }
+    .lib-curr {
+      color: #bae5ee;
+      background-color: #000;
+      border-color: rgba(186, 229, 238, 1);
+      background-image: url(/img/market/lib-curr.svg);
+      box-shadow: 0px 0px 20px rgba(186, 229, 238, 0.5137254901960784);
+    }
+    .docker {
+      color: #dddddd;
+      background-color: rgba(32, 32, 32, 1);
+      border-color: rgba(121, 121, 121, 1);
+      background-image: url(/img/market/docker.svg);
+    }
+    .docker-curr {
+      color: #bae5ee;
+      background-color: #000;
+      border-color: rgba(186, 229, 238, 1);
+      background-image: url(/img/market/docker-curr.svg);
+      box-shadow: 0px 0px 20px rgba(186, 229, 238, 0.5137254901960784);
+    }
   }
   .pross-box1 {
     position: fixed;
@@ -651,7 +772,6 @@ export default styled(Home)`
     cursor: pointer;
   }
   .ant-btn-primary {
-    background-color: #92d5e1 !important;
     color: #000;
     height: 50px;
     line-height: 40px;

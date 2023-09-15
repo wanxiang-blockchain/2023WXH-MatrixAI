@@ -24,11 +24,14 @@ function Home({ className }) {
   document.title = "Faucet";
   let addr = localStorage.getItem("addr");
   const [loading, setLoading] = useState(false);
-  const [newAddr, setNewAddr] = useState(addr);
+  const [newAddr, setNewAddr] = useState();
   const onInput = (e) => {
     let v = e.target.value;
     setNewAddr(v);
   };
+  useEffect(() => {
+    setNewAddr(addr);
+  }, []);
   const onSubmit = async () => {
     if (!newAddr) {
       return util.alert("Please Enter Your Wallet Address.");
@@ -72,7 +75,7 @@ function Home({ className }) {
               onChange={onInput}
               onKeyUp={onInput}
               disabled={loading}
-              value={addr}
+              value={newAddr}
               placeholder="Enter Your Wallet Address"
               allowClear={true}
             />
