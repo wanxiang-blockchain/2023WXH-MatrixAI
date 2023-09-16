@@ -2,7 +2,7 @@
 <img src="./docs/logo_01.png" />
 
 <p align="center">
-<a href="readme_zh.md">Zh_Readme </a>  ·  <a href="docs/Demo.md">Demo </a>  · <a href="  ">Video </a>  ·  <a href="  ">Slides </a>  ·  <a href="  ">Litepaper </a>
+<a href="readme_zh.md">Zh_Readme </a>  ·  <a href="docs/Demo.md">Demo </a>  · <a href="docs/Video_MatrixAI.mp4">Video </a>  ·  <a href="  ">Slides </a>  ·  <a href="docs/litepaper_v0.1">Litepaper </a>
 </p>
 
 # Table of Contents
