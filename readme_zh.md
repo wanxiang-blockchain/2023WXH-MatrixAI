@@ -2,7 +2,7 @@
 <img src="./docs/logo_01.png" />
 
 <p align="center">
-<a href="readme_zh.md">Zh_Readme </a>  ·  <a href="docs/Demo.md">示例 </a>  · <a href="  ">视频 </a>  ·  <a href="  ">幻灯片 </a>  ·  <a href="  ">白皮书 </a>
+ <a href="docs/Demo.md">示例 </a>  · <a href="docs/Video_MatrixAI.mp4">视频 </a>  ·  <a href="  ">幻灯片 </a>  ·  <a href="docs/litepaper_v0.1.pdf">白皮书 </a>
 </p>
 
 # 目录
